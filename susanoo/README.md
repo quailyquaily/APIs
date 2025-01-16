@@ -52,7 +52,7 @@ This API is used to create a task. The task includes a conversation with a serie
 | params.format                        | String | Output format of the response (e.g., `plaintext` or `json`).                                         |
 | params.conditions                    | Object | Conditions for task execution.                                                                       |
 | params.conditions.preferred_provider | String | Specifies the preferred provider (e.g., `bedrock`, `azure`).                                         |
-| params.conditions.preferred_model    | String | Specifies the model (e.g., `4o-mini`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v2`).                  |
+| params.conditions.preferred_model    | String | Specifies the model (e.g., `4o-mini`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v2`, `o1-mini`).                  |
 
 ### Response
 
