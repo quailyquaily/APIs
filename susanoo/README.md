@@ -2,24 +2,23 @@
 
 **You need a susanoo API key to use the APIs.**
 
+## Authentication
+
+### Request Headers
+
+| Header Name   | Value  | Description                                                        |
+| ------------- | ------ | ------------------------------------------------------------------ |
+| X-SUSANOO-KEY | SK-XXX | API key for authentication. Replace `SK-XXX` with your actual key. |
+
 ## 1. Create a Task
+
+This API is used to create a task. The task includes a conversation with a series of messages and specific parameters for processing. The task will be processed by the backend system, and a unique trace ID will be returned for tracking the task's progress.
 
 ### Endpoint
 
 ```
 POST /tasks
 ```
-
-### Description
-
-This API is used to create a task. The task includes a conversation with a series of messages and specific parameters for processing. The task will be processed by the backend system, and a unique trace ID will be returned for tracking the task's progress.
-
-### Request Headers
-
-| Header Name   | Value            | Description                                                       |
-| ------------- | ---------------- | ----------------------------------------------------------------- |
-| Content-Type  | application/json | Specifies the media type of the request body.                     |
-| X-SUSANOO-KEY | SK-XXX           | API key for authentication. Replace `SK-XX` with your actual key. |
 
 ### Request Body
 
@@ -35,6 +34,10 @@ This API is used to create a task. The task includes a conversation with a serie
   ],
   "params": {
     "format": "plaintext",
+    "search": {
+      "enabled": false,
+      "limit": 10
+    },
     "conditions": {
       "preferred_provider": "bedrock", // optional
       "preferred_model": "claude-3-5-sonnet" // optional
@@ -45,6 +48,7 @@ This API is used to create a task. The task includes a conversation with a serie
 
 #### Request Parameters
 
+<<<<<<< HEAD
 | Parameter                            | Type   | Description                                                                                          |
 | ------------------------------------ | ------ | ---------------------------------------------------------------------------------------------------- |
 | messages                             | Array  | List of messages in the conversation. Each message includes a `role` (user/assistant) and `content`. |
@@ -53,6 +57,28 @@ This API is used to create a task. The task includes a conversation with a serie
 | params.conditions                    | Object | Conditions for task execution.                                                                       |
 | params.conditions.preferred_provider | String | Specifies the preferred provider (e.g., `bedrock`, `azure`).                                         |
 | params.conditions.preferred_model    | String | Specifies the model (e.g., `4o-mini`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v2`).                  |
+=======
+| Parameter                            | Type    | Description                                                                                          |
+| ------------------------------------ | ------- | ---------------------------------------------------------------------------------------------------- |
+| messages                             | Array   | List of messages in the conversation. Each message includes a `role` (user/assistant) and `content`. |
+| params                               | Object  | Additional parameters for the task.                                                                  |
+| params.format                        | String  | Output format of the response (e.g., `plaintext` or `json`). `json` is not supported in search mode  |
+| params.search                        | Object  | Optional. Search parameters for the task.                                                            |
+| params.search.enabled                | Boolean | Specifies whether to enable search for the task.                                                     |
+| params.search.limit                  | Integer | Specifies the maximum number of search results to return.                                            |
+| params.conditions                    | Object  | Optional. Conditions for task execution.                                                             |
+| params.conditions.preferred_provider | String  | Specifies the preferred provider (e.g., `bedrock`, `azure`, `openai`, `deepseek`).                   |
+| params.conditions.preferred_model    | String  | Specifies the model (e.g., `4o-mini`, `claude-3-5-sonnet`, `o1-mini`).                               |
+
+Supported Providers & Models:
+
+| Provider   | Models              |
+| ---------- | ------------------- |
+| `bedrock`  | `claude-3-5-sonnet` |
+| `azure`    | `4o-mini`           |
+| `openai`   | `o1-mini`           |
+| `deepseek` | `deepseek-chat`     |
+>>>>>>> 1158f4d (Refactor README to improve API documentation structure and add search parameters for task creation)
 
 ### Response
 
@@ -80,23 +106,15 @@ Status Code: `200 OK`
 
 ## 2. Retrieve Task Result
 
+This API retrieves the result of a previously created task using the `trace_id`.
+
 ### Endpoint
 
 ```
 GET /tasks/result?trace_id=:trace_id
 ```
 
-### Description
-
-This API retrieves the result of a previously created task using the `trace_id`.
-
-### Request Headers
-
-| Header Name   | Value  | Description                                                        |
-| ------------- | ------ | ------------------------------------------------------------------ |
-| X-SUSANOO-KEY | SK-XXX | API key for authentication. Replace `SK-XXX` with your actual key. |
-
-### Request Query Parameters
+### Query
 
 | Parameter Name | Type   | Description                                                   |
 | -------------- | ------ | ------------------------------------------------------------- |
@@ -168,6 +186,8 @@ Status Code: `200 OK`
 
 #### Note
 
+##### JSON Output
+
 `params.format`'s value can be `plaintext` or `json`, but the `result` will always be a JSON object.
 
 If `params.format` is set to `json`, the `result` will be the JSON response. If `params.format` is set to `plaintext`, the `result` will be `{ "response": "THE_TEXT"}`
@@ -231,3 +251,85 @@ The response may be:
   "ts": 1736146749
 }
 ```
+
+##### Search Mode
+
+if `params.search.enabled` is set to `true`, the response will include search results. The search results will be included in the `result` field.
+
+For example:
+
+```json
+{
+  "messages": [
+    {"role": "user", "content": "What's Elon Musk's DOGE?"}
+  ],
+  "params": {
+    {
+      "search": {"limit": 20, "enabled": true},
+      "conditions": {"preferred_model": "o1-mini"}
+    }
+  }
+}
+```
+
+The response may be:
+
+```json
+{
+  "data": {
+    "id": 28,
+    "proxy_id": 5,
+    "action": "",
+    "messages": [
+      {
+        "content": "What's Elon Musk's DOGE?",
+        "role": "user"
+      }
+    ],
+    "params": {
+      "conditions": {
+        "preferred_model": "o1-mini"
+      },
+      "format": "json",
+      "search": {
+        "enabled": true,
+        "limit": 20
+      }
+    },
+    "result": {
+      "citations": [
+        {
+          "id": 1,
+          "link": "https://www.forbes.com/sites/digital-assets/2024/11/14/elon-musk-issues-surprise-crypto-endorsement-amid-3-trillion-bitcoin-dogecoin-and-crypto-price-boom/",
+          "snippet": "Nov 14, 2024 ... Elon Musk has praised the meme-based dogecoin, a cryptocurrency he once vowed to \"send to the moon\"...",
+          "title": "Elon Musk Issues Surprise Crypto Endorsement Amid $3 Trillion ..."
+        },
+        {
+          "id": 2,
+          "link": "https://www.usatoday.com/story/money/2024/11/13/what-is-doge-elon-musk/76255384007/",
+          "snippet": "Nov 13, 2024 ... Elon Musk has been tapped to co-lead the Department of Government Efficiency (DOGE) after years of hyping up cryptocurrency Dogecoin.",
+          "title": "What is 'Doge'? Explaining the meme after Trump appoints Elon Musk"
+        }
+        // ...
+      ],
+      "refined_query": "What is Elon Musk's involvement with Dogecoin?",
+      "response": "Elon Musk's **DOGE** primarily refers to the **Department of Government Efficiency**, a newly established advisory body appointed by former President Donald Trump {cite:2,12,14,19}. In this role, Musk, alongside entrepreneur Vivek Ramaswamy, is tasked with reducing government waste and enhancing operational efficiency across various government sectors {cite:2,5,12,14}. The acronym \"DOGE\" is a deliberate nod to **Dogecoin**, the meme-based cryptocurrency that Musk has long supported and promoted {cite:1,15,16}.\n\nThis dual use of \"DOGE\" underscores Musk's unique position at the intersection of technology, cryptocurrency, and governmental reform. While the Department of Government Efficiency aims to streamline government operations and reduce inefficiencies {cite:2,12,14,19}, the reference to Dogecoin highlights Musk's ongoing influence in the cryptocurrency market, where his endorsements have previously led to significant price movements and increased public interest {cite:1,15,16,19}.\n\nAdditionally, Musk's involvement with DOGE has sparked discussions about potential conflicts of interest and ethical considerations, given his prominent role in both the private sector (with companies like Tesla and SpaceX) and now a governmental advisory position {cite:13,20}. This multifaceted engagement demonstrates Musk's broad impact on both digital economies and public administration."
+    },
+    "status": 3,
+    "trace_id": "425d8a15-d9b9-45ea-92eb-fbcb0fd4e0ef",
+    "scheduled_at": null,
+    "cost_time": 8130,
+    "created_at": "2025-01-30T18:50:38.332091+09:00",
+    "updated_at": "2025-02-05T13:43:46.584243+09:00",
+    "pending_count": 0
+  },
+  "ts": 1738731061
+}
+```
+
+in which
+
+- `result.citations` contains the search results, each citation contains `id`, `link`, `snippet`, and `title`.
+- `result.refined_query` contains the refined query used for search.
+
+The citations are labeled with `{cite:ID}` or `{cite:ID1,ID2}` in the response text. You can use the `id` to refer to the citation in the response text.
