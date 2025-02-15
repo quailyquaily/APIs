@@ -48,16 +48,6 @@ POST /tasks
 
 #### Request Parameters
 
-<<<<<<< HEAD
-| Parameter                            | Type   | Description                                                                                          |
-| ------------------------------------ | ------ | ---------------------------------------------------------------------------------------------------- |
-| messages                             | Array  | List of messages in the conversation. Each message includes a `role` (user/assistant) and `content`. |
-| params                               | Object | Additional parameters for the task.                                                                  |
-| params.format                        | String | Output format of the response (e.g., `plaintext` or `json`).                                         |
-| params.conditions                    | Object | Conditions for task execution.                                                                       |
-| params.conditions.preferred_provider | String | Specifies the preferred provider (e.g., `bedrock`, `azure`).                                         |
-| params.conditions.preferred_model    | String | Specifies the model (e.g., `4o-mini`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v2`).                  |
-=======
 | Parameter                            | Type    | Description                                                                                          |
 | ------------------------------------ | ------- | ---------------------------------------------------------------------------------------------------- |
 | messages                             | Array   | List of messages in the conversation. Each message includes a `role` (user/assistant) and `content`. |
@@ -78,7 +68,6 @@ Supported Providers & Models:
 | `azure`    | `4o-mini`           |
 | `openai`   | `o1-mini`           |
 | `deepseek` | `deepseek-chat`     |
->>>>>>> 1158f4d (Refactor README to improve API documentation structure and add search parameters for task creation)
 
 ### Response
 
