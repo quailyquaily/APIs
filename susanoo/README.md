@@ -27,7 +27,8 @@ POST /tasks
   "messages": [
     {
       "role": "user",
-      "content": "Here is a fact, read it and say 'OK': Lucy has 3 apples, Lily has 2 more apples than Lucy."
+      "content": "Here is a fact, read it and say 'OK': Lucy has 3 apples, Lily has 2 more apples than Lucy.",
+      "enable_cache": true
     },
     { "role": "assistant", "content": "OK." },
     { "role": "user", "content": "How many apples does Lily has?" }
@@ -62,12 +63,14 @@ POST /tasks
 
 Supported Providers & Models:
 
-| Provider   | Models              |
-| ---------- | ------------------- |
-| `bedrock`  | `claude-3-5-sonnet` |
-| `azure`    | `4o-mini`           |
-| `openai`   | `o1-mini`           |
-| `deepseek` | `deepseek-chat`     |
+| Provider    | Models              |
+| ----------- | ------------------- |
+| `bedrock`   | `claude-3-5-sonnet` |
+| `azure`     | `4o-mini`           |
+| `openai`    | `o1-mini`           |
+| `deepseek`  | `deepseek-chat`     |
+| `anthropic` | `claude-3-5-sonnet` |
+| `gemini`    | `gemini-2.0-flash`  |
 
 ### Response
 
