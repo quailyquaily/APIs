@@ -59,7 +59,7 @@ POST /tasks
 | params.search.limit                  | Integer | Specifies the maximum number of search results to return.                                            |
 | params.conditions                    | Object  | Optional. Conditions for task execution.                                                             |
 | params.conditions.preferred_provider | String  | Specifies the preferred provider (e.g., `bedrock`, `azure`, `openai`, `deepseek`).                   |
-| params.conditions.preferred_model    | String  | Specifies the model (e.g., `gpt-4o-mini`, `claude-3-5-sonnet`, `o1-mini`).                               |
+| params.conditions.preferred_model    | String  | Specifies the model (e.g., `gpt-4o-mini`, `claude-3-5-sonnet`, `o1-mini`).                           |
 
 Supported Providers & Models:
 
@@ -70,6 +70,7 @@ Supported Providers & Models:
 | `openai`     | `gpt-4o-mini`, `o1-mini`                                  |
 | `anthropic`  | `claude-3-5-sonnet`                                       |
 | `gemini`     | `gemini-2.5`, `gemini-2.0-flash`, `gemini-2.0-flash-lite` |
+| `xai`        | `gork-3`, `gork-3-mini`, `grok-3-fast`                    |
 | `deepseek`\* | `deepseek-chat`                                           |
 
 \* Please contact us to enable these providers.
