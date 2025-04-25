@@ -61,6 +61,7 @@ POST /tasks
 | params.conditions                    | Object  | Optional. Conditions for task execution.                                                             |
 | params.conditions.preferred_provider | String  | Specifies the preferred provider (e.g., `bedrock`, `azure`, `openai`, `deepseek`).                   |
 | params.conditions.preferred_model    | String  | Specifies the model (e.g., `gpt-4o-mini`, `claude-3-5-sonnet`, `o1-mini`).                           |
+| params.conditions.preferred_proxy    | String  | Specifies the proxy to use (e.g., `ada`, `cindy`).                           |
 
 Supported Providers & Models:
 
