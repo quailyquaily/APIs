@@ -53,10 +53,11 @@ POST /tasks
 | ------------------------------------ | ------- | ---------------------------------------------------------------------------------------------------- |
 | messages                             | Array   | List of messages in the conversation. Each message includes a `role` (user/assistant) and `content`. |
 | params                               | Object  | Additional parameters for the task.                                                                  |
-| params.format                        | String  | Output format of the response (e.g., `plaintext` or `json`). `json` is not supported in search mode  |
+| params.format                        | String  | Output format of the response (e.g., `plaintext` or `json`).                                         |
 | params.search                        | Object  | Optional. Search parameters for the task.                                                            |
 | params.search.enabled                | Boolean | Specifies whether to enable search for the task.                                                     |
 | params.search.limit                  | Integer | Specifies the maximum number of search results to return.                                            |
+| params.search.engine                 | String  | Specifies the search engine to use. Supported engine: `google`, `twitter`, `tavily`.                 |
 | params.conditions                    | Object  | Optional. Conditions for task execution.                                                             |
 | params.conditions.preferred_provider | String  | Specifies the preferred provider (e.g., `bedrock`, `azure`, `openai`, `deepseek`).                   |
 | params.conditions.preferred_model    | String  | Specifies the model (e.g., `gpt-4o-mini`, `claude-3-5-sonnet`, `o1-mini`).                           |
@@ -67,13 +68,52 @@ Supported Providers & Models:
 | ------------ | --------------------------------------------------------- |
 | `bedrock`    | `claude-3-5-sonnet`                                       |
 | `azure`      | `gpt-4o-mini`, `o1-mini`                                  |
-| `openai`     | `gpt-4o-mini`, `o1-mini`                                  |
+| `openai`     | `gpt-4o-mini`, `o1-mini`, `o3`, `o3-mini`, `o4-mini`      |
 | `anthropic`  | `claude-3-5-sonnet`                                       |
 | `gemini`     | `gemini-2.5`, `gemini-2.0-flash`, `gemini-2.0-flash-lite` |
 | `xai`        | `gork-3`, `gork-3-mini`, `grok-3-fast`                    |
 | `deepseek`\* | `deepseek-chat`                                           |
 
 \* Please contact us to enable these providers.
+
+JSON Output Format:
+
+If `params.format` is set to `json`, susanoo will output the result in JSON format according to a template.
+
+Which means you need to specify the output format in the `messages`, or provide a template in `params.format_template`.
+
+For example:
+
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Lucy has 3 apples, Lily has 2 more apples than Lucy, how many apples does Lily have? output in JSON format. example: {\"apple_count\": NUMBER }"
+    }
+  ],
+  "params": {
+    "format": "json"
+  }
+}
+```
+
+or
+
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Lucy has 3 apples, Lily has 2 more apples than Lucy, how many apples does Lily have?"
+    }
+  ],
+  "params": {
+    "format": "json",
+    "format_template": "{\"apple_count\": NUMBER }"
+  }
+}
+```
 
 ### Response
 
@@ -249,8 +289,6 @@ The response may be:
 
 ##### Search Mode
 
-if `params.search.enabled` is set to `true`, the response will include search results. The search results will be included in the `result` field.
-
 For example:
 
 ```json
@@ -260,7 +298,7 @@ For example:
   ],
   "params": {
     {
-      "search": {"limit": 20, "enabled": true},
+      "search": {"limit": 20, "enabled": true, "engine": "google" },
       "conditions": {"preferred_model": "o1-mini"}
     }
   }
