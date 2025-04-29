@@ -53,7 +53,7 @@ POST /tasks
 | ------------------------------------ | ------- | ---------------------------------------------------------------------------------------------------- |
 | messages                             | Array   | List of messages in the conversation. Each message includes a `role` (user/assistant) and `content`. |
 | params                               | Object  | Additional parameters for the task.                                                                  |
-| params.format                        | String  | Output format of the response (e.g., `plaintext` or `json`).                                         |
+| params.format                        | String  | Output format of the response (e.g., `plaintext`, `yaml` or `json`).                                         |
 | params.search                        | Object  | Optional. Search parameters for the task.                                                            |
 | params.search.enabled                | Boolean | Specifies whether to enable search for the task.                                                     |
 | params.search.limit                  | Integer | Specifies the maximum number of search results to return.                                            |
@@ -77,9 +77,9 @@ Supported Providers & Models:
 
 \* Please contact us to enable these providers.
 
-JSON Output Format:
+Output Format:
 
-If `params.format` is set to `json`, susanoo will output the result in JSON format according to a template.
+If `params.format` is set to `json` or `yaml`, susanoo will output the result in JSON or YAML format according to a template.
 
 Which means you need to specify the output format in the `messages`, or provide a template in `params.format_template`.
 
@@ -187,8 +187,8 @@ Status Code: `200 OK`
     },
     "result": {
       "response": {
-        "Json": null,
-        "Text": "To determine how many apples Lily has, we need to use the information provided:\n\n1. Lucy has 3 apples\n2. Lily has 2 more apples than Lucy\n\nWe can calculate this as follows:\nLily's apples = Lucy's apples + 2\nLily's apples = 3 + 2\nLily's apples = 5\n\nTherefore, Lily has 5 apples."
+        "json": null,
+        "text": "To determine how many apples Lily has, we need to use the information provided:\n\n1. Lucy has 3 apples\n2. Lily has 2 more apples than Lucy\n\nWe can calculate this as follows:\nLily's apples = Lucy's apples + 2\nLily's apples = 3 + 2\nLily's apples = 5\n\nTherefore, Lily has 5 apples."
       }
     },
     "status": 3,
@@ -212,7 +212,6 @@ Status Code: `200 OK`
 | messages        | Array   | List of messages in the task.                                             |
 | params          | Object  | Parameters used for the task.                                             |
 | result          | Object  | The result of the task.                                                   |
-| result.response | Object  | Contains the result in `Json` and `Text`.                                 |
 | status          | Integer | Status of the task (1 = pending, 2 = running, 3 = completed, 4 = failed). |
 | trace_id        | String  | Trace ID for the task.                                                    |
 | scheduled_at    | String  | Time when the task was scheduled (if any).                                |
@@ -222,13 +221,15 @@ Status Code: `200 OK`
 
 #### Note
 
-##### JSON Output
+##### Output format
 
-`params.format`'s value can be `plaintext` or `json`, but the `result` will always be a JSON object.
+`params.format`'s value can be `plaintext`, `yaml` or `json`, but the `result` will always be a JSON object.
 
-If `params.format` is set to `json`, the `result` will be the JSON response. If `params.format` is set to `plaintext`, the `result` will be `{ "response": "THE_TEXT"}`
+If `params.format` is set to `json`, the `result` will be the JSON response. 
 
-If you prefer to ask LLM to output the result in JSON format, you can set `params.format` to `json`, and ask they to output the result in JSON format in the `messages`.
+If `params.format` is set to `plaintext`, the `result` will be `{ "response": "THE_TEXT"}`
+
+If `params.format` is set to `yaml`, the `result` will be `{ "yaml": "THE_YAML_CODE"}`
 
 For example:
 
@@ -242,11 +243,12 @@ For example:
     { "role": "assistant", "content": "OK." },
     {
       "role": "user",
-      "content": "How many apples does Lily has? please output in JSON format. example: {\"apple_count\": NUMBER }"
+      "content": "How many apples does Lily has? please output in JSON format."
     }
   ],
   "params": {
-    "format": "json"
+    "format": "json",
+    "format_template": "{\"apple_count\": NUMBER }"
   }
 }
 ```
@@ -269,12 +271,13 @@ The response may be:
         "role": "assistant"
       },
       {
-        "content": "How many apples does Lily has? please output in JSON format. example: {\"apple_count\": NUMBER }",
+        "content": "How many apples does Lily has? please output in JSON format.",
         "role": "user"
       }
     ],
     "params": {
-      "format": "json"
+      "format": "json",
+      "format_template": "{\"apple_count\": NUMBER }"
     },
     "result": { "apple_count": 5 },
     "status": 3,
@@ -324,7 +327,6 @@ The response may be:
       "conditions": {
         "preferred_model": "o1-mini"
       },
-      "format": "json",
       "search": {
         "enabled": true,
         "limit": 20
