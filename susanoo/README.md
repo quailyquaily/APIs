@@ -421,14 +421,12 @@ For example, for jina, you can specify the task adapter to better fit your use c
 
 ```json
 {
-	"provider": "jina",
-	"model": "jina-embeddings-v3",
-	"input": [
-		"What's the capital of France?",
-	],
-	"jina_options": {
-		"task": "retrieval.query"
-	}
+  "provider": "jina",
+  "model": "jina-embeddings-v3",
+  "input": ["What's the capital of France?"],
+  "jina_options": {
+    "task": "retrieval.query"
+  }
 }
 ```
 
@@ -499,6 +497,98 @@ for i := 0; i < len(decodedEmbedding); i++ {
   decodedEmbedding[i] = math.Float32frombits(binary.LittleEndian.Uint32(decodedData[i*4 : (i+1)*4]))
 }
 fmt.Println(decodedEmbedding)
+```
+
+#### Error Response
+
+```json
+{
+  "data": {
+    "error": "..."
+  },
+  "ts": 1738731061
+}
+```
+
+## 4. Rerank
+
+This API is used to rerank a list of documents.
+
+### Endpoint
+
+```
+POST /rerank
+```
+
+### Request Body
+
+```json
+{
+  "provider": "jina",
+  "model": "jina-reranker-m0",
+  "query": "Can I migrate from 微信公众号 to Quaily?",
+  "top_n": 3,
+  "documents": [
+    {
+      "text": "Once there is a little girl, she will grow up to be a woman."
+    },
+    {
+      "text": "今日の天気はいいですね、明日も晴れです。一緒に外食しましょう。"
+    },
+    {
+      "text": "During the California Gold Rush, some merchants made more money selling supplies to miners than the miners made finding gold."
+    },
+    {
+      "text": "Quaily 可以从竹白等地方迁移过来。如果是公众号的话，需要确保版权没问题才行。"
+    },
+    {
+      "image": "https://static.quail.ink/media/1evuw7x8.webp"
+    }
+  ],
+  "return_documents":
+}
+```
+
+### Request Parameters
+
+| Parameter Name   | Type    | Description                                      |
+| ---------------- | ------- | ------------------------------------------------ |
+| provider         | String  | Provider name.                                   |
+| model            | String  | Model name.                                      |
+| query            | String  | The query to rerank the documents.               |
+| top_n            | Integer | The number of documents to return.               |
+| documents        | Array   | The list of documents to rerank.                 |
+| return_documents | Boolean | Whether to return the documents in the response. |
+
+### Response
+
+#### Success Response
+
+Status Code: `200 OK`
+
+```json
+{
+  "data": {
+    "results": [
+      {
+        "document": {},
+        "index": 3,
+        "relevance_score": 0.973403006423134
+      },
+      {
+        "document": {},
+        "index": 4,
+        "relevance_score": 0.9024721629592075
+      },
+      {
+        "document": {},
+        "index": 1,
+        "relevance_score": 0.5210812447881809
+      }
+    ]
+  },
+  "ts": 1748436040
+}
 ```
 
 #### Error Response
