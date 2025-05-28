@@ -454,7 +454,7 @@ Status Code: `200 OK`
 ```json
 {
   "data": {
-    "result": [
+    "embeddings": [
       {
         "embedding": "base64_encoded_embedding_string",
         "index": 1,
