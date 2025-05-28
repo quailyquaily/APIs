@@ -524,13 +524,12 @@ POST /rerank
 
 ```json
 {
-  "provider": "jina",
-  "model": "jina-reranker-m0",
+  "model": "jina-reranker-v2-base-multilingual",
   "query": "Can I migrate from 微信公众号 to Quaily?",
   "top_n": 3,
   "documents": [
     {
-      "text": "Once there is a little girl, she will grow up to be a woman."
+      "text": "Once there is a little bird called quail, it will grow up to be a little girl."
     },
     {
       "text": "今日の天気はいいですね、明日も晴れです。一緒に外食しましょう。"
@@ -540,12 +539,9 @@ POST /rerank
     },
     {
       "text": "Quaily 可以从竹白等地方迁移过来。如果是公众号的话，需要确保版权没问题才行。"
-    },
-    {
-      "image": "https://static.quail.ink/media/1evuw7x8.webp"
     }
   ],
-  "return_documents":
+  "return_documents": false
 }
 ```
 
@@ -560,6 +556,13 @@ POST /rerank
 | documents        | Array   | The list of documents to rerank.                 |
 | return_documents | Boolean | Whether to return the documents in the response. |
 
+Supported Models:
+
+| Model Name                         | Description                    |
+| ---------------------------------- | ------------------------------ |
+| jina-reranker-m0                   | A multimodel reranker model.   |
+| jina-reranker-v2-base-multilingual | A multilingual reranker model. |
+
 ### Response
 
 #### Success Response
@@ -573,21 +576,21 @@ Status Code: `200 OK`
       {
         "document": {},
         "index": 3,
-        "relevance_score": 0.973403006423134
+        "relevance_score": 0.9453186827840592
       },
       {
         "document": {},
-        "index": 4,
-        "relevance_score": 0.9024721629592075
+        "index": 0,
+        "relevance_score": 0.40884310013171293
       },
       {
         "document": {},
         "index": 1,
-        "relevance_score": 0.5210812447881809
+        "relevance_score": 0.3465191827953349
       }
     ]
   },
-  "ts": 1748436040
+  "ts": 1748469536
 }
 ```
 
