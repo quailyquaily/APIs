@@ -53,7 +53,7 @@ POST /tasks
 | ------------------------------------ | ------- | ---------------------------------------------------------------------------------------------------- |
 | messages                             | Array   | List of messages in the conversation. Each message includes a `role` (user/assistant) and `content`. |
 | params                               | Object  | Additional parameters for the task.                                                                  |
-| params.format                        | String  | Output format of the response (e.g., `plaintext`, `yaml` or `json`).                                         |
+| params.format                        | String  | Output format of the response (e.g., `plaintext`, `yaml` or `json`).                                 |
 | params.search                        | Object  | Optional. Search parameters for the task.                                                            |
 | params.search.enabled                | Boolean | Specifies whether to enable search for the task.                                                     |
 | params.search.limit                  | Integer | Specifies the maximum number of search results to return.                                            |
@@ -61,7 +61,7 @@ POST /tasks
 | params.conditions                    | Object  | Optional. Conditions for task execution.                                                             |
 | params.conditions.preferred_provider | String  | Specifies the preferred provider (e.g., `bedrock`, `azure`, `openai`, `deepseek`).                   |
 | params.conditions.preferred_model    | String  | Specifies the model (e.g., `gpt-4o-mini`, `claude-3-5-sonnet`, `o1-mini`).                           |
-| params.conditions.preferred_proxy    | String  | Specifies the proxy to use (e.g., `ada`, `cindy`).                           |
+| params.conditions.preferred_proxy    | String  | Specifies the proxy to use (e.g., `ada`, `cindy`).                                                   |
 
 Supported Providers & Models:
 
@@ -204,20 +204,20 @@ Status Code: `200 OK`
 
 #### Response Fields
 
-| Field Name      | Type    | Description                                                               |
-| --------------- | ------- | ------------------------------------------------------------------------- |
-| id              | Integer | Task ID.                                                                  |
-| proxy_id        | Integer | Proxy ID for task execution.                                              |
-| action          | String  | Action type for the task (if any).                                        |
-| messages        | Array   | List of messages in the task.                                             |
-| params          | Object  | Parameters used for the task.                                             |
-| result          | Object  | The result of the task.                                                   |
-| status          | Integer | Status of the task (1 = pending, 2 = running, 3 = completed, 4 = failed). |
-| trace_id        | String  | Trace ID for the task.                                                    |
-| scheduled_at    | String  | Time when the task was scheduled (if any).                                |
-| created_at      | String  | Time when the task was created.                                           |
-| updated_at      | String  | Time when the task was last updated.                                      |
-| ts              | Integer | Timestamp when the response was generated.                                |
+| Field Name   | Type    | Description                                                               |
+| ------------ | ------- | ------------------------------------------------------------------------- |
+| id           | Integer | Task ID.                                                                  |
+| proxy_id     | Integer | Proxy ID for task execution.                                              |
+| action       | String  | Action type for the task (if any).                                        |
+| messages     | Array   | List of messages in the task.                                             |
+| params       | Object  | Parameters used for the task.                                             |
+| result       | Object  | The result of the task.                                                   |
+| status       | Integer | Status of the task (1 = pending, 2 = running, 3 = completed, 4 = failed). |
+| trace_id     | String  | Trace ID for the task.                                                    |
+| scheduled_at | String  | Time when the task was scheduled (if any).                                |
+| created_at   | String  | Time when the task was created.                                           |
+| updated_at   | String  | Time when the task was last updated.                                      |
+| ts           | Integer | Timestamp when the response was generated.                                |
 
 #### Note
 
@@ -225,7 +225,7 @@ Status Code: `200 OK`
 
 `params.format`'s value can be `plaintext`, `yaml` or `json`, but the `result` will always be a JSON object.
 
-If `params.format` is set to `json`, the `result` will be the JSON response. 
+If `params.format` is set to `json`, the `result` will be the JSON response.
 
 If `params.format` is set to `plaintext`, the `result` will be `{ "response": "THE_TEXT"}`
 
@@ -369,3 +369,145 @@ in which
 - `result.refined_query` contains the refined query used for search.
 
 The citations are labeled with `{cite:ID}` or `{cite:ID1,ID2}` in the response text. You can use the `id` to refer to the citation in the response text.
+
+## 3. Create Embedding
+
+This API is used to create an embedding for a given text.
+
+### Endpoint
+
+```
+POST /embeddings
+```
+
+### Request Body
+
+```json
+{
+  "provider": "openai",
+  "model": "text-embedding-3-small",
+  "input": ["A beautiful sunset over the beach", "浜辺に沈む美しい夕日"],
+  "openai_options": {
+    // optional openai options
+  },
+  "jina_options": {
+    // optional jina options
+  }
+}
+```
+
+### Request Parameters
+
+| Parameter Name | Type   | Description                                        |
+| -------------- | ------ | -------------------------------------------------- |
+| provider       | String | Provider name.                                     |
+| model          | String | Model name.                                        |
+| input          | Array  | The text to create embedding for.                  |
+| openai_options | Object | Optional openai options. will be passed to openai. |
+| jina_options   | Object | Optional jina options. will be passed to jina.     |
+
+Supported Providers & Models:
+
+| Provider | Models                                         |
+| -------- | ---------------------------------------------- |
+| openai   | text-embedding-3-small, text-embedding-3-large |
+| jina     | jina-embeddings-v3                             |
+
+Additional Options:
+
+You can pass additional options to the provider.
+
+For example, for jina, you can specify the task adapter to better fit your use case (assume you are using jina for retrieval task).
+
+```json
+{
+	"provider": "jina",
+	"model": "jina-embeddings-v3",
+	"input": [
+		"What's the capital of France?",
+	],
+	"jina_options": {
+		"task": "retrieval.query"
+	}
+}
+```
+
+Or for openai, you can specify the smaller dimensions for `text-embedding-3` and later models.
+
+```json
+{
+  "provider": "openai",
+  "model": "text-embedding-3-small",
+  "input": ["A beautiful sunset over the beach", "浜辺に沈む美しい夕日"],
+  "openai_options": {
+    "dimensions": 128
+  }
+}
+```
+
+### Response
+
+#### Success Response
+
+Status Code: `200 OK`
+
+```json
+{
+  "data": {
+    "result": [
+      {
+        "embedding": "base64_encoded_embedding_string",
+        "index": 1,
+        "object": "embedding"
+      },
+      {
+        "embedding": "base64_encoded_embedding_string",
+        "index": 2,
+        "object": "embedding"
+      }
+    ]
+  },
+  "ts": 1738731061
+}
+```
+
+The `embedding` is base64 encoded. You need to decode the `embedding` to get the actual embedding vector, the array of floats.
+
+For example:
+
+```js
+const decodedEmbedding = new Float32Array(
+  Buffer.from(embedding, "base64").buffer
+);
+```
+
+```python
+decoded_embedding = np.frombuffer(
+  base64.b64decode(embedding),
+  dtype=np.float32
+)
+```
+
+```go
+decodedData, err := base64.StdEncoding.DecodeString(embedding)
+if err != nil {
+  return nil, err
+}
+const sizeOfFloat32 = 4
+decodedEmbedding := make([]float32, len(decodedData)/sizeOfFloat32)
+for i := 0; i < len(decodedEmbedding); i++ {
+  decodedEmbedding[i] = math.Float32frombits(binary.LittleEndian.Uint32(decodedData[i*4 : (i+1)*4]))
+}
+fmt.Println(decodedEmbedding)
+```
+
+#### Error Response
+
+```json
+{
+  "data": {
+    "error": "..."
+  },
+  "ts": 1738731061
+}
+```
