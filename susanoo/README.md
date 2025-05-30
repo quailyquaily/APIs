@@ -665,28 +665,28 @@ Status Code: `200 OK`
 
 ```json
 {
-	"data": {
-		"results": [
-			{
-				"index": 0,
-				"object": "classification",
-				"prediction": "Nature and Outdoors",
-				"predictions": [
-					{
-						"label": "Food and Dining",
-						"score": 0.3303683400154114
-					},
-					{
-						"label": "Nature and Outdoors",
-						"score": 0.3474631905555725
-					},
-					{
-						"label": "Traveling and Trips",
-						"score": 0.3221685290336609
-					}
-				],
-				"score": 0.3474631905555725
-			},
+  "data": {
+    "results": [
+      {
+        "index": 0,
+        "object": "classification",
+        "prediction": "Nature and Outdoors",
+        "predictions": [
+          {
+            "label": "Food and Dining",
+            "score": 0.3303683400154114
+          },
+          {
+            "label": "Nature and Outdoors",
+            "score": 0.3474631905555725
+          },
+          {
+            "label": "Traveling and Trips",
+            "score": 0.3221685290336609
+          }
+        ],
+        "score": 0.3474631905555725
+      }
       // ...
     ]
   }
