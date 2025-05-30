@@ -452,7 +452,7 @@ Status Code: `200 OK`
 ```json
 {
   "data": {
-    "embeddings": [
+    "results": [
       {
         "embedding": "base64_encoded_embedding_string",
         "index": 1,
@@ -602,5 +602,102 @@ Status Code: `200 OK`
     "error": "..."
   },
   "ts": 1738731061
+}
+```
+
+## 5. Classify
+
+### Endpoint
+
+```
+POST /classify
+```
+
+### Request Body
+
+```json
+{
+  "model": "jina-embeddings-v3",
+  "input": [
+    {
+      "text": "A beautiful sunset over the beach"
+    },
+    {
+      "text": "海滩上美丽的日落"
+    },
+    {
+      "text": "浜辺に沈む美しい夕日"
+    },
+    {
+      "text": "this apple is sweet! you should have a try!"
+    },
+    {
+      "text": "this apple is sweet! bring some to Hawaii to share with your grandmother."
+    },
+    {
+      "text": "Go to Hawaii to see your grandmother."
+    }
+  ],
+  "labels": ["Food and drinks", "Nature and outdoors", "Traveling and Trips"]
+}
+```
+
+### Request Parameters
+
+| Parameter Name | Type   | Description                    |
+| -------------- | ------ | ------------------------------ |
+| model          | String | Model name.                    |
+| input          | Array  | The list of texts to classify. |
+| labels         | Array  | The list of labels.            |
+
+Supported Models:
+
+| Model Name         | Description                      |
+| ------------------ | -------------------------------- |
+| jina-embeddings-v3 | A multilingual embeddings model. |
+| jina-clip-v2       | A multimodal embeddings model.   |
+
+### Response
+
+#### Success Response
+
+Status Code: `200 OK`
+
+```json
+{
+	"data": {
+		"results": [
+			{
+				"index": 0,
+				"object": "classification",
+				"prediction": "Nature and Outdoors",
+				"predictions": [
+					{
+						"label": "Food and Dining",
+						"score": 0.3303683400154114
+					},
+					{
+						"label": "Nature and Outdoors",
+						"score": 0.3474631905555725
+					},
+					{
+						"label": "Traveling and Trips",
+						"score": 0.3221685290336609
+					}
+				],
+				"score": 0.3474631905555725
+			},
+      // ...
+  }
+}
+```
+
+#### Error Response
+
+```json
+{
+  "data": {
+    "error": "..."
+  }
 }
 ```
