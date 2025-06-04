@@ -686,7 +686,7 @@ Status Code: `200 OK`
           }
         ],
         "score": 0.3474631905555725
-      },
+      }
       // ...
     ]
   }
@@ -702,3 +702,85 @@ Status Code: `200 OK`
   }
 }
 ```
+
+## 6. Generate Images
+
+### Endpoint
+
+```
+POST /images/generations?async=0
+```
+
+### Request Body
+
+```json
+{
+  "model": "gpt-image-1",
+  "prompt": "A rabbit is eating a tiger"
+}
+```
+
+### Request Parameters
+
+| Parameter Name | Type    | Description                       |
+| -------------- | ------- | --------------------------------- |
+| provider       | String  | Provider name.                    |
+| model          | String  | Model name.                       |
+| prompt         | String  | The prompt to generate the image. |
+| n              | Integer | The number of images to generate. |
+| openai_options | Object  | optional, OpenAI options.         |
+| gemini_options | Object  | optional, Gemini options.         |
+
+Supported Models:
+
+| Model Name  | Description                       |
+| ----------- | --------------------------------- |
+| gpt-image-1 | A text-to-image generation model. |
+
+### Query Parameters
+
+| Parameter Name | Type    | Description       |
+| -------------- | ------- | ----------------- |
+| async          | Integer | optional, 0 or 1. |
+
+- `async=0`: The API will return the image.
+- `async=1`: The API will return the task id.
+
+### Response
+
+#### Success Response
+
+Status Code: `200 OK`
+
+For `async=0`:
+
+```json
+{
+  "data": {
+    "expires": "2025-06-04T04:26:24Z",
+    "results": [
+      {
+        "b64_json": "base64_encoded_image_string"
+      },
+      {
+        // ...
+      }
+    ]
+  },
+  "ts": 1738731061
+}
+```
+
+For `async=1`:
+
+```json
+{
+  "data": {
+    "code": 0,
+    "trace_id": "UUID"
+  },
+  "ts": 1749007509
+}
+```
+
+_Note: The `b64_json` field is base64 encoded image string, and the generated image will expire after 20 minutes._
