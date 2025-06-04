@@ -65,15 +65,15 @@ POST /tasks
 
 Supported Providers & Models:
 
-| Provider     | Models                                                    |
-| ------------ | --------------------------------------------------------- |
-| `bedrock`    | `claude-3-5-sonnet`                                       |
-| `azure`      | `gpt-4o-mini`, `o1-mini`                                  |
-| `openai`     | `gpt-4o-mini`, `o1-mini`, `o3`, `o3-mini`, `o4-mini`      |
-| `anthropic`  | `claude-3-5-sonnet`                                       |
-| `gemini`     | `gemini-2.5`, `gemini-2.0-flash`, `gemini-2.0-flash-lite` |
-| `xai`        | `gork-3`, `gork-3-mini`, `grok-3-fast`                    |
-| `deepseek`\* | `deepseek-chat`                                           |
+| Provider     | Models                                                        |
+| ------------ | ------------------------------------------------------------- |
+| `bedrock`    | `claude-3-5-sonnet`                                           |
+| `azure`      | `gpt-4o-mini`, `o1-mini`                                      |
+| `openai`     | `gpt-4o-mini`, `o1-mini`, `o3`, `o3-mini`, `o4-mini`          |
+| `anthropic`  | `claude-3-5-sonnet`                                           |
+| `gemini`     | `gemini-2.5-pro`, `gemini-2.0-flash`, `gemini-2.0-flash-lite` |
+| `xai`        | `grok-3`, `grok-3-mini`                                       |
+| `deepseek`\* | `deepseek-chat`                                               |
 
 \* Please contact us to enable these providers.
 
