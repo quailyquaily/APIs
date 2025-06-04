@@ -722,20 +722,23 @@ POST /images/generations?async=0
 
 ### Request Parameters
 
-| Parameter Name | Type    | Description                       |
-| -------------- | ------- | --------------------------------- |
-| provider       | String  | Provider name.                    |
-| model          | String  | Model name.                       |
-| prompt         | String  | The prompt to generate the image. |
-| n              | Integer | The number of images to generate. |
-| openai_options | Object  | optional, OpenAI options.         |
-| gemini_options | Object  | optional, Gemini options.         |
+| Parameter Name | Type    | Description                            |
+| -------------- | ------- | -------------------------------------- |
+| model          | String  | Model name.                            |
+| prompt         | String  | The prompt to generate the image.      |
+| n              | Integer | The number of images to generate, 1~4. |
+| provider       | String  | optional, provider name.               |
+| openai_options | Object  | optional, OpenAI options.              |
+| gemini_options | Object  | optional, Gemini options.              |
 
 Supported Models:
 
-| Model Name  | Description                       |
-| ----------- | --------------------------------- |
-| gpt-image-1 | A text-to-image generation model. |
+| Model Name              | Description                                  |
+| ----------------------- | -------------------------------------------- |
+| gpt-image-1             | A text-to-image generation model, by OpenAI. |
+| imagen-3.0-generate-002 | A text-to-image generation model by gemini.  |
+
+_Note: by default, the output format is base64 encoded image string. For `gpt-image-1`, the mime type is `image/webp`. For `imagen-3.0-generate-002`, the mime type is `image/png`._
 
 ### Query Parameters
 
