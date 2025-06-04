@@ -784,3 +784,19 @@ For `async=1`:
 ```
 
 _Note: The `b64_json` field is base64 encoded image string, and the generated image will expire after 20 minutes._
+
+#### Decode the image
+
+```go
+imgData, err := base64.StdEncoding.DecodeString(Base64Encoded)
+if err != nil {
+  fmt.Errorf("failed to decode image data: %w", err)
+  return
+}
+
+imgObj, err := png.Decode(bytes.NewBuffer(imgData))
+if err != nil {
+  fmt.Errorf("failed to decode image: %w", err)
+  return
+}
+```
