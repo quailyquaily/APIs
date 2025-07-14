@@ -386,7 +386,11 @@ POST /embeddings
 {
   "provider": "openai",
   "model": "text-embedding-3-small",
-  "input": ["A beautiful sunset over the beach", "浜辺に沈む美しい夕日"],
+  "input": [{
+    "text": "A beautiful sunset over the beach"
+  }, {
+    "text": "浜辺に沈む美しい夕日"
+  }],
   "openai_options": {
     // optional openai options
   },
