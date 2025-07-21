@@ -831,11 +831,13 @@ POST /agents/factcheck
 
 ### Request Parameters
 
-| Parameter Name | Type   | Description                                          |
-| -------------- | ------ | ---------------------------------------------------- |
-| model          | String | Model name.                                          |
-| search_engines | Array  | The list of search engines to use for fact-checking. |
-| statement      | String | The statement to fact-check.                         |
+| Parameter Name | Type    | Description                                                                 |
+| -------------- | ------- | --------------------------------------------------------------------------- |
+| model          | String  | Model name.                                                                 |
+| statement      | String  | The statement to fact-check.                                                |
+| search_engines | Array   | Optional, The list of search engines to use for fact-checking. Default is ["google"]. |
+| max_iterations | Integer | Optional, the maximum number of iterations to run the agent. Default is 3.  |
+| max_results    | Integer | Optional, the maximum number of search results to return. Default is 10.    |
 
 Supported Search Engines:
 
