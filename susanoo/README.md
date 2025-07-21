@@ -386,11 +386,14 @@ POST /embeddings
 {
   "provider": "openai",
   "model": "text-embedding-3-small",
-  "input": [{
-    "text": "A beautiful sunset over the beach"
-  }, {
-    "text": "浜辺に沈む美しい夕日"
-  }],
+  "input": [
+    {
+      "text": "A beautiful sunset over the beach"
+    },
+    {
+      "text": "浜辺に沈む美しい夕日"
+    }
+  ],
   "openai_options": {
     // optional openai options
   },
@@ -805,5 +808,79 @@ imgObj, err := png.Decode(bytes.NewBuffer(imgData))
 if err != nil {
   fmt.Errorf("failed to decode image: %w", err)
   return
+}
+```
+
+## 7. Agent - Fact Checking
+
+### Endpoint
+
+```
+POST /agents/factcheck
+```
+
+### Request Body
+
+```json
+{
+  "model": "grok-3",
+  "search_engines": ["twitter"],
+  "statement": "Latest Consumer Price Index (CPI) of United State for June is 2.7%"
+}
+```
+
+### Request Parameters
+
+| Parameter Name | Type   | Description                                          |
+| -------------- | ------ | ---------------------------------------------------- |
+| model          | String | Model name.                                          |
+| search_engines | Array  | The list of search engines to use for fact-checking. |
+| statement      | String | The statement to fact-check.                         |
+
+Supported Search Engines:
+
+- `google`: Google Search
+- `twitter`: Twitter Search
+- `tavily`: Tavily Search
+
+You can specify multiple search engines in the `search_engines` array, to search for the statement across multiple platforms. As a result, the agent will return the most relevant information from the search results, but cost more tokens and time.
+
+### Response
+
+#### Success Response
+
+```json
+{
+  "data": {
+    "code": 0,
+    "trace_id": "88d90ffd-dae5-4607-a02e-70935e683f99"
+  },
+  "ts": 1753074205
+}
+```
+
+Please use `GET /tasks/result?trace_id=88d90ffd-dae5-4607-a02e-70935e683f99` to retrieve the result.
+
+The result of the task should be similar to:
+
+```json
+{
+  "data": {
+    // ...
+    "result": {
+      // How the agent checks the fact
+      "explanation": "All three provided sources consistently report the US CPI inflation for June as 2.7%, indicating corroboration across multiple posts. However, the sources are from social media (X platform) with no direct link to official data (e.g., Bureau of Labor Statistics), and the year mentioned (2025) raises potential context issues as it may be a typo or speculative. Confidence is slightly reduced due to lack of primary source credibility and unverified URLs.",
+      "original_urls": [
+        // Original URLs from the search results
+        "https://x.com/dummy/status/1947157365586804853",
+        "https://x.com/dummy/status/1947142496385106145",
+        "https://x.com/dummy/status/1947054118251516093"
+      ],
+      "possibility": 0.85, // Confidence score indicating the likelihood of the statement being true, ranging from 0 to 1.
+      "result": true // true means the statement is true, false means the statement is false
+    }
+    // ...
+  },
+  "ts": 1753074205
 }
 ```
