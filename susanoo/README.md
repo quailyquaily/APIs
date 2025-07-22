@@ -412,6 +412,7 @@ POST /embeddings
 | input          | Array  | The text to create embedding for.                  |
 | openai_options | Object | Optional openai options. will be passed to openai. |
 | jina_options   | Object | Optional jina options. will be passed to jina.     |
+| gemini_options | Object | Optional gemini options. will be passed to gemini. |
 
 Supported Providers & Models:
 
@@ -419,6 +420,7 @@ Supported Providers & Models:
 | -------- | ---------------------------------------------- |
 | openai   | text-embedding-3-small, text-embedding-3-large |
 | jina     | jina-embeddings-v3                             |
+| gemini   | gemini-embeddings-001                          |
 
 Additional Options:
 
@@ -430,7 +432,7 @@ For example, for jina, you can specify the task adapter to better fit your use c
 {
   "provider": "jina",
   "model": "jina-embeddings-v3",
-  "input": ["What's the capital of France?"],
+  "input": [{ "text": "What's the capital of France?" }],
   "jina_options": {
     "task": "retrieval.query"
   }
@@ -443,7 +445,10 @@ Or for openai, you can specify the smaller dimensions for `text-embedding-3` and
 {
   "provider": "openai",
   "model": "text-embedding-3-small",
-  "input": ["A beautiful sunset over the beach", "浜辺に沈む美しい夕日"],
+  "input": [
+    { "text": "A beautiful sunset over the beach" },
+    { "text": "浜辺に沈む美しい夕日" }
+  ],
   "openai_options": {
     "dimensions": 128
   }
@@ -831,13 +836,13 @@ POST /agents/factcheck
 
 ### Request Parameters
 
-| Parameter Name | Type    | Description                                                                 |
-| -------------- | ------- | --------------------------------------------------------------------------- |
-| model          | String  | Model name.                                                                 |
-| statement      | String  | The statement to fact-check.                                                |
+| Parameter Name | Type    | Description                                                                           |
+| -------------- | ------- | ------------------------------------------------------------------------------------- |
+| model          | String  | Model name.                                                                           |
+| statement      | String  | The statement to fact-check.                                                          |
 | search_engines | Array   | Optional, The list of search engines to use for fact-checking. Default is ["google"]. |
-| max_iterations | Integer | Optional, the maximum number of iterations to run the agent. Default is 3.  |
-| max_results    | Integer | Optional, the maximum number of search results to return. Default is 10.    |
+| max_iterations | Integer | Optional, the maximum number of iterations to run the agent. Default is 3.            |
+| max_results    | Integer | Optional, the maximum number of search results to return. Default is 10.              |
 
 Supported Search Engines:
 
