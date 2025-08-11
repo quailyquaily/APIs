@@ -68,8 +68,8 @@ Supported Providers & Models:
 | Provider     | Models                                                        |
 | ------------ | ------------------------------------------------------------- |
 | `bedrock`    | `claude-3-5-sonnet`                                           |
-| `azure`      | `gpt-4o-mini`, `o1-mini`                                      |
-| `openai`     | `gpt-4o-mini`, `o1-mini`, `o3`, `o3-mini`, `o4-mini`          |
+| `azure`      | `gpt-4o-mini`,                                                |
+| `openai`     | `gpt-4o-mini`, `o3`, `o3-mini`, `o4-mini`, `gpt-5`, `gpt-5-mini`, `gpt-5-nano`          |
 | `anthropic`  | `claude-3-5-sonnet`                                           |
 | `gemini`     | `gemini-2.5-pro`, `gemini-2.0-flash`, `gemini-2.0-flash-lite` |
 | `xai`        | `grok-3`, `grok-3-mini`                                       |
