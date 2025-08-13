@@ -41,7 +41,7 @@ POST /tasks
     },
     "conditions": {
       "preferred_provider": "bedrock", // optional
-      "preferred_model": "claude-3-5-sonnet" // optional
+      "preferred_model": "claude-sonnet-4" // optional
     }
   }
 }
@@ -60,17 +60,17 @@ POST /tasks
 | params.search.engine                 | String  | Specifies the search engine to use. Supported engine: `google`, `twitter`, `tavily`.                 |
 | params.conditions                    | Object  | Optional. Conditions for task execution.                                                             |
 | params.conditions.preferred_provider | String  | Specifies the preferred provider (e.g., `bedrock`, `azure`, `openai`, `deepseek`).                   |
-| params.conditions.preferred_model    | String  | Specifies the model (e.g., `gpt-4o-mini`, `claude-3-5-sonnet`, `o1-mini`).                           |
+| params.conditions.preferred_model    | String  | Specifies the model (e.g., `gpt-4o-mini`, `claude-sonnet-4`, `o1-mini`).                           |
 | params.conditions.preferred_proxy    | String  | Specifies the proxy to use (e.g., `ada`, `cindy`).                                                   |
 
 Supported Providers & Models:
 
 | Provider     | Models                                                        |
 | ------------ | ------------------------------------------------------------- |
-| `bedrock`    | `claude-3-5-sonnet`                                           |
+| `bedrock`    | `claude-sonnet-4`                                           |
 | `azure`      | `gpt-4o-mini`,                                                |
 | `openai`     | `gpt-4o-mini`, `o3`, `o3-mini`, `o4-mini`, `gpt-5`, `gpt-5-mini`, `gpt-5-nano`          |
-| `anthropic`  | `claude-3-5-sonnet`                                           |
+| `anthropic`  | `claude-sonnet-4`                                           |
 | `gemini`     | `gemini-2.5-pro`, `gemini-2.0-flash`, `gemini-2.0-flash-lite` |
 | `xai`        | `grok-3`, `grok-3-mini`                                       |
 | `deepseek`\* | `deepseek-chat`                                               |
